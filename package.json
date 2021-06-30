@@ -1,0 +1,27 @@
+{
+  "name": "recommendationsystem",
+  "version": "1.0.0",
+  "description": "A hybrid recommendation system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "Recommendater",
+    "System"
+  ],
+  "author": "Atharva Mashalkar",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "mongoose": "^5.12.14",
+    "nodemon": "^2.0.7",
+    "q": "^1.5.1"
+  }
+}
