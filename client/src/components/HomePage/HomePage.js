@@ -1,60 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import Header from "../../common/Header";
-import { getGenralRecommendations, getMovieInfo } from "../../store/movie/movieAction";
-import { Spin, Layout, Divider, Row, Col, Card, List } from "antd"
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from 'react-responsive-carousel'
+import { getGenralRecommendations } from "../../store/movie/movieAction";
+import { Spin, Layout, Divider, Row, Col, Card, List } from "antd";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; 
+import { Carousel } from 'react-responsive-carousel';
 
 const { Footer, Content } = Layout;
 
 const HomePage = (props) => {
+
     const { 
         getGenralRecommendations, 
         failedRequest, 
-        genreBasedMovies, 
         loading, 
         moviesInfo, 
-        genre, 
-        getMovieInfo 
     } = props;
 
-    const [genreList, setGenreList] = useState([])
-    const [movieDict, setMovieDict] = useState({})
-    const [currentGenre, setCurrentGenre] = useState("")
-    const []
-    useEffect(() => {
-        getGenralRecommendations()
-    }, [])
-
-    useEffect(() => {
-        for (const property in genreBasedMovies) {
-            const NUM_OF_MOVIES_TO_DISPLAY = 7 
-            let start = Math.random()
-            let end = start + NUM_OF_MOVIES_TO_DISPLAY
-            let genre = property
-            genreBasedMovies[property].slice(start, end)
-            setGenreList([...genreList, [property, genreBasedMovies[property].slice(start, end)]])
-        }
-        getMovieData()
-    },[genreBasedMovies])
-
-    useEffect(() => {
-
-    },[genreList, moviesInfo])
-    const getMovieData = () => {
-        genreList.forEach(element => {
-            let genre = element[0]
-            element[1].forEach(movie => {
-                getMovieInfo(movie[0], movie[1], genre)
-            })
-        })
-    }
-
+    
     const displayMovies = () => {
         return (
             <>
-                {genreList.map((genre) =>
+                {moviesInfo.map((genre) =>
                     <>
                         <Divider dashed orientation="left">{genre[0]}</Divider>
                         <Carousel 
@@ -88,32 +55,31 @@ const HomePage = (props) => {
         <Layout>
             <Header />
             <Content style={{ padding: '30px 50px', height: '100%' }}>
-                {genreBasedMovies ? displayMovies() :
+                {loading ? 
                     (
                         <Row align="middle" gutter='32'>
                             <Col span={2} offset={11}>
                                 <Spin size="large" />
                             </Col>
                         </Row>
-                    )
+                    ) : displayMovies()
                 }
             </Content>
             <Footer style={{ textAlign: 'center' }}>Footer</Footer>
         </Layout>
     )
+
 }
 
 const mapStateToProps = (state) => {
     return {
         failedRequest: state.movie.failedRequest,
-        genreBasedMovies: state.movie.genreBasedMovies,
         loading: state.movie.loading,
-        genre : state.movie.genre,
         moviesInfo : state.movie.moviesInfo
     }
 }
 
 export default connect(
     mapStateToProps,
-    { getGenralRecommendations, getMovieInfo }
+    { getGenralRecommendations }
 )(HomePage)
