@@ -1,35 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Header from "../../common/Header";
+import Footer from "../../common/Footer";
 import { getGenralRecommendations } from "../../store/movie/movieAction";
-import { Spin, Layout, Divider, Row, Col, Card, List } from "antd";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; 
+import { Spin, Layout, Divider, Row, Col, Image } from "antd";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
+import Signup from "../Signup";
+import Login from "../Login";
 
-const { Footer, Content } = Layout;
+const { Content } = Layout;
 
 const HomePage = (props) => {
 
-    const { 
-        getGenralRecommendations, 
-        failedRequest, 
-        loading, 
-        moviesInfo, 
+    const {
+        getGenralRecommendations,
+        failedRequest,
+        loading,
+        moviesInfo,
     } = props;
 
-    
+    useEffect(() => {
+        getGenralRecommendations()
+    },[])
+
     const displayMovies = () => {
+        console.log(moviesInfo)
         return (
             <>
-                {moviesInfo.map((genre) =>
+                { moviesInfo ?
+                Object.keys(moviesInfo).map((genre) =>
                     <>
-                        <Divider dashed orientation="left">{genre[0]}</Divider>
-                        <Carousel 
+                        <Divider dashed orientation="left">{genre}</Divider>
+                        <Carousel
                             autoFocus={true}
                             autoPlay={true}
                             centerMode={true}
-                            centerSlidePercentage={20}
-                            dynamicHeight={true}
+                            centerSlidePercentage={25}
+                            dynamicHeight={false}
                             emulateTouch={true}
                             infiniteLoop={true}
                             showStatus={false}
@@ -37,16 +45,20 @@ const HomePage = (props) => {
                             showThumbs={false}
                         >
                             {
-                                genre[1].map(movie => 
-                                    <div key={movie[0]}>
-                                        <h4>{}</h4>
-                                        {/* <p>Movie : {movie[0]} Year : {movie[1]}</p> */}
+                                moviesInfo[genre].map(movie =>
+                                    <div key={movie.imdbID}>
+                                        {/* <h4>{movie.Title}</h4> */}
+                                        <Image
+                                            width={200}
+                                            src={movie.Poster}
+                                            onError={() => "Image not available"}
+                                        />
                                     </div>
-                                    )
+                                )
                             }
                         </Carousel>
                     </>
-                )}
+                ):null}
             </>
         )
     }
@@ -54,18 +66,28 @@ const HomePage = (props) => {
     return (
         <Layout>
             <Header />
-            <Content style={{ padding: '30px 50px', height: '100%' }}>
-                {loading ? 
+            <Content style={{ padding: '30px 0px', height: '100%'}}>
+                <Signup />
+                <Login/>
+                {loading ?
                     (
                         <Row align="middle" gutter='32'>
                             <Col span={2} offset={11}>
                                 <Spin size="large" />
                             </Col>
                         </Row>
-                    ) : displayMovies()
+                    ) :
+                    (
+                        <>
+                            {
+                                failedRequest ? <h1 style={{textAlign:"center"}}> Something went wrong. Please try refreshing the page</h1> :
+                                    displayMovies()
+                            }
+                        </>
+                    )
                 }
             </Content>
-            <Footer style={{ textAlign: 'center' }}>Footer</Footer>
+            <Footer/>
         </Layout>
     )
 
@@ -75,7 +97,7 @@ const mapStateToProps = (state) => {
     return {
         failedRequest: state.movie.failedRequest,
         loading: state.movie.loading,
-        moviesInfo : state.movie.moviesInfo
+        moviesInfo: state.movie.moviesInfo
     }
 }
 

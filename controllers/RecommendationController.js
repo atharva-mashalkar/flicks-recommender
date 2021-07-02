@@ -1,5 +1,4 @@
 const ResponseUtils = require('../utils/ResponseUtils');
-const ErrorCodes = require('../utils/ErrorCodes');
 const RecommendationUtils = require("../utils/RecommendationUtils")();
 const OMDbUtils = require("../utils/OMDbUtils")();
 const fs = require('fs');

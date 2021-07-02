@@ -14,9 +14,8 @@ export const getGenralRecommendations = () => (dispatch) => {
     let succFunc = (res) => {
         dispatch({
             type: FETCH_GENERAL_RECOMMENDATIONS_SUCCESS,
-            payload: res.data
+            payload: res.data.data
         });
-        console.log(res);
     };
     let failureFunc = (err) => {
         dispatch({
