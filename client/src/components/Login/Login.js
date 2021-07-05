@@ -29,7 +29,7 @@ const Login = (props) => {
     useEffect(() => {
         if(userInfo){
             localStorage.setItem('JWT-Token', token);
-            message.success('User Verified',1)
+            message.success('User Verified')
             .then(()=> {
                 toggleLoginDrawer(false)
                 history.push('/dashboard')
@@ -38,7 +38,7 @@ const Login = (props) => {
     },[userInfo]);
 
     useEffect(() => {
-        if(failed_req){
+        if(failed_req && openLoginDrawer){
             message.error(failed_req.msg,3);
         }
     },[failed_req]);

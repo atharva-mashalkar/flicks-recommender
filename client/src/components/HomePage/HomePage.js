@@ -3,28 +3,43 @@ import { connect } from 'react-redux';
 import Header from "../../common/Header";
 import Footer from "../../common/Footer";
 import { getGenralRecommendations } from "../../store/movie/movieAction";
+import { verifyToken } from "../../store/user/userAction";
 import { Spin, Layout, Divider, Row, Col, Image } from "antd";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import Signup from "../Signup";
 import Login from "../Login";
+import { useHistory } from "react-router-dom";
 
 const { Content } = Layout;
 
 const HomePage = (props) => {
+    let history = useHistory();
 
     const {
         getGenralRecommendations,
         failedRequest,
         loading,
         moviesInfo,
+        verifyToken,
+        userInfo,
+        openLoginDrawer,
+        openSignupDrawer
     } = props;
 
     useEffect(() => {
+        let jwtToken = localStorage.getItem("JWT-Token")
+        if(jwtToken && jwtToken!==undefined){
+            verifyToken(jwtToken)
+        }
         getGenralRecommendations()
-        let token = localStorage.getItem("JWT-Token")
-        
     },[])
+
+    useEffect(() => {
+        if(userInfo && !openSignupDrawer && !openLoginDrawer){
+            history.push('/dashboard')
+        }
+    }, [userInfo])
 
     const displayMovies = () => {
         return (
@@ -48,7 +63,6 @@ const HomePage = (props) => {
                             {
                                 moviesInfo[genre].map(movie =>
                                     <div key={movie.imdbID}>
-                                        {/* <h4>{movie.Title}</h4> */}
                                         <Image
                                             width={200}
                                             src={movie.Poster}
@@ -98,11 +112,16 @@ const mapStateToProps = (state) => {
     return {
         failedRequest: state.movie.failedRequest,
         loading: state.movie.loading,
-        moviesInfo: state.movie.moviesInfo
+        moviesInfo: state.movie.moviesInfo,
+        userInfo:state.user.userInfo,
+        openLoginDrawer: state.user.openLoginDrawer,
+        openSignupDrawer: state.user.openSignupDrawer,
     }
 }
 
 export default connect(
     mapStateToProps,
-    { getGenralRecommendations }
+    { getGenralRecommendations,
+        verifyToken
+    }
 )(HomePage)

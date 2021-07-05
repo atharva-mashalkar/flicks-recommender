@@ -5,7 +5,7 @@ import {
     FAILED_USER_REQUEST,
     REQUEST,
     CLEARING_PROPS,
-    LOGIN_USER
+    LOGIN_USER,
 } from './userType'
 import { Recommender } from '../../utils/apiHitHelpers'
 
@@ -70,4 +70,22 @@ export const loginUser = (data) => (dispatch) => {
         });
     };
     Recommender.post("/public/login",data, succFunc, failureFunc);
+}
+
+export const verifyToken = (token) => (dispatch) => {
+    let succFunc = (res) => {
+        let token = res.data.data.token;
+        delete res.data.data.token
+        dispatch({
+            type: LOGIN_USER,
+            payload: {token , user: res.data.data} 
+        });
+    };
+    let failureFunc = (err) => {
+        dispatch({
+            type: FAILED_USER_REQUEST,
+            payload: null
+        });
+    };
+    Recommender.post("/private/verify-token",{token}, succFunc, failureFunc);
 }

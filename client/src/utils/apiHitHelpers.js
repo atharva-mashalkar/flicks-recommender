@@ -3,8 +3,14 @@ import axios from "axios";
 export const baseURL = "https://flicks-recommender.herokuapp.com";
 
 function getaxiosInstance() {
+  const token = localStorage.getItem('JWT-Token')
+  let headers = {};
+  if (token && token !== undefined) {
+    headers['Authorization'] = 'Bearer ' + token
+  }
   const axiosInstance = axios.create({
-    baseURL:"https://flicks-recommender.herokuapp.com"
+    baseURL:"https://flicks-recommender.herokuapp.com",
+    headers
   });
   return axiosInstance;
 }
