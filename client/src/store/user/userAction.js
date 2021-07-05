@@ -2,10 +2,18 @@ import {
     TOGGLE_SIGNUP_DRAWER,
     TOGGLE_LOGIN_DRAWER,
     REGISTER_USER,
-    FAILED_REQUEST,
-    REQUEST
+    FAILED_USER_REQUEST,
+    REQUEST,
+    CLEARING_PROPS
 } from './userType'
 import { Recommender } from '../../utils/apiHitHelpers'
+
+export const clearProps = () => (dispatch) => {
+    dispatch({
+        type:CLEARING_PROPS,
+        payload:true
+    })
+}
 
 export const toggleSignupDrawer = (open) => (dispatch) => {
     dispatch({
@@ -29,15 +37,14 @@ export const registerUser = (data) => (dispatch) => {
     let succFunc = (res) => {
         dispatch({
             type: REGISTER_USER,
-            payload: res.data.data
+            payload: res.data
         });
     };
     let failureFunc = (err) => {
         dispatch({
-            type: FAILED_REQUEST,
-            payload: true
+            type: FAILED_USER_REQUEST,
+            payload: err.response.data
         });
-        console.log(err);
     };
-    Recommender.get("/public/signup", succFunc, failureFunc);
+    Recommender.post("/public/signup",data, succFunc, failureFunc);
 }

@@ -1,22 +1,63 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { connect } from 'react-redux'
-import { Drawer, Form, Button, Input} from 'antd';
-import { toggleSignupDrawer } from '../../store/user/userAction';
+import { 
+    Drawer, 
+    Form, 
+    Button, 
+    Input,
+    message
+} from 'antd';
+import { 
+    toggleSignupDrawer, 
+    registerUser,
+    clearProps
+ } from '../../store/user/userAction';
+ import { useHistory } from "react-router-dom";
 
 const Signup = (props) => {
 
+    let history = useHistory();
+
     const {
+        toggleSignupDrawer,
+        registerUser,
+        clearProps,
         openSignupDrawer,
-        toggleSignupDrawer
+        processing_reg,
+        req_success,
+        failed_req
     } = props;
+
+    useEffect(() => {
+        if(req_success){
+            message.success('User successfully registered!')
+            .then(()=> {
+                toggleSignupDrawer(false)
+                history.push('/dashboard')
+            })
+        }
+        return () => {
+            clearProps()
+        }
+    },[req_success]);
+
+    useEffect(() => {
+        if(failed_req){
+            if (failed_req.msg === "User Already Registered"){
+                message.error('The username is already taken. Please try another username',3);
+            }
+            else{
+                message.error('Something went wrong. Please check the form again and submit', 3);
+            }
+        }
+    },[failed_req]);
 
     const onClose = () => {
         toggleSignupDrawer(false)
     };
 
     const onFinish = (values) => {
-        console.log('Success:', values);
-        toggleSignupDrawer(false)
+        registerUser(values);
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -90,7 +131,7 @@ const Signup = (props) => {
                             span: 16,
                         }}
                     >
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit" loading={processing_reg}>
                             Submit
                         </Button>
                     </Form.Item>
@@ -102,8 +143,15 @@ const Signup = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        openSignupDrawer: state.user.openSignupDrawer
+        openSignupDrawer: state.user.openSignupDrawer,
+        failed_req: state.user.failed_req,
+        processing_reg: state.user.processing_reg,
+        req_success: state.user.req_success
     }
 };
 
-export default connect(mapStateToProps, { toggleSignupDrawer })(Signup)
+export default connect(mapStateToProps, { 
+    toggleSignupDrawer, 
+    registerUser,
+    clearProps
+})(Signup)

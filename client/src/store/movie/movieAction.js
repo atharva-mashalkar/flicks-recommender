@@ -20,9 +20,8 @@ export const getGenralRecommendations = () => (dispatch) => {
     let failureFunc = (err) => {
         dispatch({
             type: FAILED_REQUEST,
-            payload: true
+            payload: err.response.data
         });
-        console.log(err);
     };
     Recommender.get("/public/general-recommendations", succFunc, failureFunc);
 }

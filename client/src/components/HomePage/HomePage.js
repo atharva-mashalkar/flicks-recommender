@@ -25,7 +25,6 @@ const HomePage = (props) => {
     },[])
 
     const displayMovies = () => {
-        console.log(moviesInfo)
         return (
             <>
                 { moviesInfo ?
