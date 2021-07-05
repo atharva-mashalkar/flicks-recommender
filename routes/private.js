@@ -8,4 +8,6 @@ const UserController = require("../controllers/UserController");
 const auth = require('../policies/auth.policy');
 router.use((req, res, next) => auth(req, res, next));
 
+router.post('/verify-token', UserController.verifyToken);
+
 module.exports = router;

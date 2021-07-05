@@ -45,7 +45,7 @@ exports.registerUser = async(req, res) => {
 
 exports.login = async(req, res) => {
     const {username, password} = req.body;
-    var token;
+    let token;
     let user; 
     if (!username || !password){
         return ResponseUtils.process400(res);
@@ -65,8 +65,8 @@ exports.login = async(req, res) => {
         token = JwtService.issue({
             id: user._id.toString(), 
             username:user.username,
-            firstname: user.firstname,
-            lastname: user.lastname,
+            firstName: user.firstName,
+            lastName: user.lastName,
             uid: user.uid,
             moviesRated: user.moviesRated
         })
@@ -77,6 +77,28 @@ exports.login = async(req, res) => {
     }catch(e){
         console.error("Error in Login: ", e)
         return ResponseUtils.process500(res, "Something went wrong. Please check the form again and submit")
+    }
+    return ResponseUtils.processData(res, {
+        user,
+        token
+    })
+}
+
+exports.verifyToken = async (req, res) => {
+    const {token} = req.body;
+    if(!token){
+        return ResponseUtils.process400(res);
+    }
+    let user;
+    try{
+        //Fetching user info
+        user = await DBUtils.getEntityForId(User,req.user.id);
+        if (!user){
+            return ResponseUtils.process404(res, "User not found");
+        }   
+    }catch(e){
+        console.error("Error in Verifying User: ", e)
+        return ResponseUtils.process500(res)
     }
     return ResponseUtils.processData(res, {
         user,

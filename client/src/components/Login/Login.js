@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { connect } from 'react-redux'
 import { 
     Drawer, 
@@ -9,16 +9,15 @@ import {
 } from 'antd';
 import { 
     toggleLoginDrawer,
-    clearProps,
     loginUser
 } from '../../store/user/userAction';
 import { useHistory } from "react-router-dom";
 
 const Login = (props) => {
+    let history = useHistory();
 
     const {
         toggleLoginDrawer,
-        clearProps,
         loginUser,
         openLoginDrawer,
         failed_req,
@@ -26,6 +25,23 @@ const Login = (props) => {
         userInfo,
         token,
     } = props;
+
+    useEffect(() => {
+        if(userInfo){
+            localStorage.setItem('JWT-Token', token);
+            message.success('User Verified',1)
+            .then(()=> {
+                toggleLoginDrawer(false)
+                history.push('/dashboard')
+            })
+        }
+    },[userInfo]);
+
+    useEffect(() => {
+        if(failed_req){
+            message.error(failed_req.msg,3);
+        }
+    },[failed_req]);
 
     const onClose = () => {
         toggleLoginDrawer(false)
@@ -92,7 +108,7 @@ const Login = (props) => {
                             span: 16,
                         }}
                     >
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit" loading={processing_reg}>
                             Submit
                         </Button>
                     </Form.Item>
@@ -114,6 +130,5 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, { 
     toggleLoginDrawer, 
-    clearProps,
     loginUser,
 })(Login)

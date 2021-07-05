@@ -22,6 +22,8 @@ const HomePage = (props) => {
 
     useEffect(() => {
         getGenralRecommendations()
+        let token = localStorage.getItem("JWT-Token")
+        
     },[])
 
     const displayMovies = () => {

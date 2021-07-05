@@ -35,13 +35,16 @@ export default function (state = initialState, action) {
             return{
                 ...state,
                 userInfo:payload.user,
-                token:payload.token
+                token:payload.token,
+                failed_req:null,
+                processing_reg: false
             }
         case REGISTER_USER:
             return{
                 ...state,
                 processing_reg:false,
-                req_success:true
+                req_success:true,
+                failed_req:null,
             };
         case FAILED_USER_REQUEST:
             return{

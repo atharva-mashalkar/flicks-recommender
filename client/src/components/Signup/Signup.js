@@ -42,7 +42,7 @@ const Signup = (props) => {
     },[req_success]);
 
     useEffect(() => {
-        if(failed_req){
+        if(failed_req && openSignupDrawer){
             if (failed_req.msg === "User Already Registered"){
                 message.error('The username is already taken. Please try another username',3);
             }

@@ -1,5 +1,4 @@
 const JWTService = require("../services/auth.service");
-// const console = require('../utils/Logger');
 
 // usually: "Authorization: Bearer [token]" or "token: [token]"
 module.exports = (req, res, next) => {
@@ -30,19 +29,14 @@ module.exports = (req, res, next) => {
 	} else {
 		return res.status(403).json({ msg: "No Authorization was found" });
 	}
-	//console.info(token);
-	return JWTService.verify(token, async (err, thisToken) => {
+	return JWTService.verify(token, async (err, userInfo) => {
 		if (err) {
 			return res.status(403).json({ err });
 		} else {
 			token = await JWTService.refresh(token);
 			res.header("Authorization", token)
 		}
-
-		// if (!thisToken.passwordSet) {
-		// 	return res.status(403).json({ msg: "Please set the password" });
-		// }
-		req.user = thisToken;
+		req.user = userInfo;
 		return next();
 	});
 };
