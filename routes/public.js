@@ -12,4 +12,6 @@ router.get('/general-recommendations', RecommendationController.getGeneralRecomm
 
 router.post('/signup', UserController.registerUser);
 
+router.post('/login', UserController.login);
+
 module.exports = router

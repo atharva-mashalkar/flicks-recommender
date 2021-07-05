@@ -7,6 +7,7 @@ const connection = require('./config/connection');
 
 //Importing routes
 const publicRoutes = require('./routes/public');
+const privateRoutes = require('./routes/private');
 
 // Checking environment
 const environment = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
@@ -15,7 +16,10 @@ const environment = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 const PORT = process.env.PORT || 7000;
 
 //Allow CORS
-app.use(cors());
+const corsOptions = {
+    exposedHeaders: 'Authorization',
+};
+app.use(cors(corsOptions));
 
 //Connecting Mongodb Database
 mongoose.connect(connection[environment].url,{useNewUrlParser : true , useCreateIndex: true , useUnifiedTopology: true });
@@ -37,6 +41,7 @@ app.use(helmet());
 
 // Declaring the routes
 app.use('/public', publicRoutes);
+app.use('/private', privateRoutes);
 
 // Staring the server
 app.listen(PORT, () => {
