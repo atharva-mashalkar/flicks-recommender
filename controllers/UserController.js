@@ -4,7 +4,6 @@ const User = require("../models/User");
 const BcryptService = require("../services/BcryptService");
 
 exports.registerUser = async(req, res) => {
-    console.log(req.body)
     const {firstName, lastName, username, password } = req.body;
 
     if (!firstName || !lastName || !username || !password){
@@ -13,6 +12,18 @@ exports.registerUser = async(req, res) => {
 
     try{
         let users = await DBUtils.getAllEntities(User,{});
+
+        var userPresent = false
+        for(let i=0; i<users.length; i++){
+            if(username === users[i].username){
+                userPresent = true
+                break
+            }
+        }
+        if(userPresent){
+            return ResponseUtils.process400(res, "User Already Registered");
+        }
+
         user = new User({
             firstName,
             lastName,
