@@ -4,3 +4,4 @@ export const REGISTER_USER = "REGISTER_USER";
 export const REQUEST = "REQUEST";
 export const FAILED_USER_REQUEST = "FAILED_USER_REQUEST";
 export const CLEARING_PROPS = "CLEARING_PROPS"
+export const LOGIN_USER = "LOGIN_USER";

@@ -61,7 +61,7 @@ const Signup = (props) => {
     };
 
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+        message.error('Please fill in all the fields of the form',3);
     };
 
     return (

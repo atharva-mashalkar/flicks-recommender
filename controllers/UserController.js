@@ -76,7 +76,7 @@ exports.login = async(req, res) => {
 
     }catch(e){
         console.error("Error in Login: ", e)
-        return ResponseUtils.process500(res)
+        return ResponseUtils.process500(res, "Something went wrong. Please check the form again and submit")
     }
     return ResponseUtils.processData(res, {
         user,

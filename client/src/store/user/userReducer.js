@@ -4,7 +4,8 @@ import {
     REGISTER_USER,
     FAILED_USER_REQUEST,
     REQUEST,
-    CLEARING_PROPS
+    CLEARING_PROPS,
+    LOGIN_USER
 } from './userType'
 
 const initialState = {
@@ -12,7 +13,9 @@ const initialState = {
     openLoginDrawer:false,
     failed_req : null,
     processing_reg: false,
-    req_success: false
+    req_success: false,
+    userInfo:null,
+    token:null
 }
 
 export default function (state = initialState, action) {
@@ -28,6 +31,12 @@ export default function (state = initialState, action) {
                 ...state,
                 openLoginDrawer : payload,
             };
+        case LOGIN_USER:
+            return{
+                ...state,
+                userInfo:payload.user,
+                token:payload.token
+            }
         case REGISTER_USER:
             return{
                 ...state,

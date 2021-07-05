@@ -1,13 +1,30 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Drawer, Form, Button, Input } from 'antd';
-import { toggleLoginDrawer } from '../../store/user/userAction';
+import { 
+    Drawer, 
+    Form, 
+    Button, 
+    Input,
+    message,
+} from 'antd';
+import { 
+    toggleLoginDrawer,
+    clearProps,
+    loginUser
+} from '../../store/user/userAction';
+import { useHistory } from "react-router-dom";
 
 const Login = (props) => {
 
     const {
+        toggleLoginDrawer,
+        clearProps,
+        loginUser,
         openLoginDrawer,
-        toggleLoginDrawer
+        failed_req,
+        processing_reg,
+        userInfo,
+        token,
     } = props;
 
     const onClose = () => {
@@ -15,12 +32,11 @@ const Login = (props) => {
     };
 
     const onFinish = (values) => {
-        console.log('Success:', values);
-        toggleLoginDrawer(false);
+        loginUser(values)
     };
 
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+        message.error('Please fill in all the fields of the form',3);
     };
 
     return (
@@ -88,8 +104,16 @@ const Login = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        openLoginDrawer: state.user.openLoginDrawer
+        openLoginDrawer: state.user.openLoginDrawer,
+        failed_req: state.user.failed_req,
+        processing_reg: state.user.processing_reg,
+        userInfo:state.user.userInfo,
+        token:state.user.token
     }
 };
 
-export default connect(mapStateToProps, { toggleLoginDrawer })(Login)
+export default connect(mapStateToProps, { 
+    toggleLoginDrawer, 
+    clearProps,
+    loginUser,
+})(Login)
