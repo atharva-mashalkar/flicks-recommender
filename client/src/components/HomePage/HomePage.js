@@ -28,11 +28,13 @@ const HomePage = (props) => {
     } = props;
 
     useEffect(() => {
-        let jwtToken = localStorage.getItem("JWT-Token")
+        const jwtToken = localStorage.getItem("JWT-Token")
         if(jwtToken && jwtToken!==undefined){
             verifyToken(jwtToken)
         }
-        getGenralRecommendations()
+        if(!moviesInfo){
+            getGenralRecommendations()
+        }
     },[])
 
     useEffect(() => {
@@ -61,7 +63,7 @@ const HomePage = (props) => {
                             showThumbs={false}
                         >
                             {
-                                moviesInfo[genre].map(movie =>
+                                moviesInfo[genre].slice(0,10).map(movie =>
                                     <div key={movie.imdbID}>
                                         <Image
                                             width={200}

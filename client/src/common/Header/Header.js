@@ -1,18 +1,25 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { Layout, Button, Row, Col } from "antd";
 import { connect } from 'react-redux'
 import { 
     toggleSignupDrawer, 
-    toggleLoginDrawer 
+    toggleLoginDrawer,
+    userLogedOut
 } from '../../store/user/userAction';
+import { useHistory } from "react-router-dom";
 
 const { Header} = Layout;
 
 function HeaderComponent(props) {
+    let history = useHistory();
+
+    const [loggedIn, setLoggedIn] = useState(false);
 
     const {
         toggleSignupDrawer,
-        toggleLoginDrawer
+        toggleLoginDrawer,
+        userLogedOut,
+        token
     } = props;
 
     const showSignupDrawer = () => {
@@ -23,8 +30,47 @@ function HeaderComponent(props) {
         toggleLoginDrawer(true);
     }
     
-    return (
-        <Header>
+    useEffect(() => {
+        if(token){
+            setLoggedIn(true);
+        }
+        else{
+            setLoggedIn(false);
+        }
+    },[token]);
+
+    const logOut = () => {
+        localStorage.removeItem("JWT-Token");
+        userLogedOut();
+        history.push('/');
+    }
+
+    const loggedInHeader = () => {
+        return (
+            <Row 
+                align="middle" 
+                gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} 
+            >
+                <Col 
+                    className="gutter-row" 
+                    span={1} 
+                    align="start" 
+                    offset="0"
+                >
+                    <Button 
+                        size="large" 
+                        style={{ borderRadius: '10px' }} 
+                        onClick={logOut}
+                    >
+                        Logout
+                    </Button>
+                </Col>
+            </Row>
+        )
+    }
+
+    const notLoggedInHeader = () => {
+        return (
             <Row 
                 align="middle" 
                 gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} 
@@ -64,17 +110,26 @@ function HeaderComponent(props) {
                     </Button>
                 </Col>
             </Row>
+        )
+    };
+
+    return (
+        <Header>
+            {
+                loggedIn ? loggedInHeader() : notLoggedInHeader()
+            }
         </Header>
     )
 }
 
 const mapStateToProps = (state) => {
     return{
-        openSignupDrawer:state.user.openSignupDrawer,
+        token:state.user.token,
     }
 };
 
 export default connect(mapStateToProps, {
     toggleSignupDrawer,
-    toggleLoginDrawer
+    toggleLoginDrawer,
+    userLogedOut
 })(HeaderComponent)

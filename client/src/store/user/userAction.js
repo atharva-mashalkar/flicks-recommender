@@ -6,8 +6,16 @@ import {
     REQUEST,
     CLEARING_PROPS,
     LOGIN_USER,
+    USER_LOGGED_OUT
 } from './userType'
 import { Recommender } from '../../utils/apiHitHelpers'
+
+export const userLogedOut = () => (dispatch) => {
+    dispatch({
+        type:USER_LOGGED_OUT,
+        payload:null
+    })
+}
 
 export const clearProps = () => (dispatch) => {
     dispatch({

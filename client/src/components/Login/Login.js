@@ -29,7 +29,7 @@ const Login = (props) => {
     useEffect(() => {
         if(userInfo){
             localStorage.setItem('JWT-Token', token);
-            message.success('User Verified')
+            message.success('User Verified',0.8)
             .then(()=> {
                 toggleLoginDrawer(false)
                 history.push('/dashboard')

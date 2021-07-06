@@ -2,6 +2,7 @@ import {
     FAILED_REQUEST,
     FETCH_GENERAL_RECOMMENDATIONS_SUCCESS,
     FETCH_MOVIE_REQUEST,
+    USER_LOGGED_OUT
 } from './movieType';
 
 const initialState = {
@@ -30,6 +31,12 @@ export default function (state = initialState, action) {
                 failedRequest : payload,
                 loading : false
             };
+        case USER_LOGGED_OUT:
+            return{
+                ...state,
+                failedRequest : false,
+                loading: false,
+            }
         default:
             return state;
     }

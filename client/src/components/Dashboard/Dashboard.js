@@ -1,15 +1,44 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { connect } from 'react-redux'
+import { useHistory } from "react-router-dom";
+import { verifyToken } from "../../store/user/userAction";
+import { getGenralRecommendations } from "../../store/movie/movieAction";
+import Header from "../../common/Header";
+import Footer from "../../common/Footer";
+import { Spin, Layout, Row, Col, Image } from "antd";
+
+const { Content } = Layout;
 
 const Dashboard = (props) => {
+    let history = useHistory();
+
+    const {
+        verifyToken,
+        getGenralRecommendations,
+        userInfo,
+        moviesInfo,
+        token
+    } = props;
 
     useEffect(() => {
-        console.log(props);
-    })
+        const jwtToken = localStorage.getItem("JWT-Token")
+        if(jwtToken && jwtToken!==undefined){
+            // verifyToken(jwtToken)
+            // getGenralRecommendations()
+        }
+        if(!jwtToken){
+            history.push('/')
+        }
+    },[])
+
     return (
-        <div>
-            <h1>Welcome to dashboard</h1>
-        </div>
+        <Layout>
+            <Header />
+            <Content style={{ padding: '30px 0px', height: '100%'}}>
+                
+            </Content>
+            <Footer/>
+        </Layout>
     )
 }
 
@@ -19,8 +48,7 @@ const mapStateToProps = (state) => ({
     token:state.user.token
 })
 
-const mapDispatchToProps = {
-    
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+export default connect(mapStateToProps,{
+    verifyToken,
+    getGenralRecommendations
+})(Dashboard)

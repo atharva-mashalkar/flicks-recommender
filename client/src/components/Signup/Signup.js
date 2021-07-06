@@ -30,7 +30,7 @@ const Signup = (props) => {
 
     useEffect(() => {
         if(req_success){
-            message.success('User successfully registered!')
+            message.success('User successfully registered!',0.8)
             .then(()=> {
                 toggleSignupDrawer(false)
                 history.push('/dashboard')

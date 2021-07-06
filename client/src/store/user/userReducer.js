@@ -5,7 +5,8 @@ import {
     FAILED_USER_REQUEST,
     REQUEST,
     CLEARING_PROPS,
-    LOGIN_USER
+    LOGIN_USER,
+    USER_LOGGED_OUT
 } from './userType'
 
 const initialState = {
@@ -68,6 +69,17 @@ export default function (state = initialState, action) {
                 processing_reg: false,
                 req_success: false
             };
+        case USER_LOGGED_OUT:
+            return{
+                ...state,
+                openSignupDrawer:false,
+                openLoginDrawer:false,
+                failed_req : null,
+                processing_reg: false,
+                req_success: false,
+                userInfo:null,
+                token:null
+            }
         default:
             return state
     };
