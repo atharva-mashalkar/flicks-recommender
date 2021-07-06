@@ -2,18 +2,26 @@ import {
     FAILED_REQUEST,
     FETCH_GENERAL_RECOMMENDATIONS_SUCCESS,
     FETCH_MOVIE_REQUEST,
-    USER_LOGGED_OUT
+    USER_LOGGED_OUT,
+    GET_ALL_TOP_MOVIES
 } from './movieType';
 
 const initialState = {
     failedRequest : false,
     loading: false,
-    moviesInfo : null
+    moviesInfo : null,
+    allTopMovies:null
 }
 
 export default function (state = initialState, action) {
     const {type, payload} = action
     switch (type){
+        case GET_ALL_TOP_MOVIES:
+            return{
+                ...state,
+                allTopMovies:payload,
+                loading:false,
+            };
         case FETCH_GENERAL_RECOMMENDATIONS_SUCCESS:
             return{
                 ...state,

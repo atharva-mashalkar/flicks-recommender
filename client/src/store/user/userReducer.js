@@ -6,7 +6,8 @@ import {
     REQUEST,
     CLEARING_PROPS,
     LOGIN_USER,
-    USER_LOGGED_OUT
+    USER_LOGGED_OUT,
+    TOGGLE_MODAL
 } from './userType'
 
 const initialState = {
@@ -16,12 +17,18 @@ const initialState = {
     processing_reg: false,
     req_success: false,
     userInfo:null,
-    token:null
+    token:null,
+    modalVisible:false
 }
 
 export default function (state = initialState, action) {
     const {type, payload} = action
     switch (type){
+        case TOGGLE_MODAL:
+            return {
+                ...state,
+                modalVisible:payload
+            }
         case TOGGLE_SIGNUP_DRAWER:
             return{
                 ...state,

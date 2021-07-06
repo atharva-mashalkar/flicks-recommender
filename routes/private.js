@@ -10,4 +10,6 @@ router.use((req, res, next) => auth(req, res, next));
 
 router.post('/verify-token', UserController.verifyToken);
 
+router.get('/get-all-top-movies', RecommendationController.getAllTopMovies);
+
 module.exports = router;

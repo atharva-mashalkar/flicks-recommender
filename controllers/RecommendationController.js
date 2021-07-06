@@ -17,3 +17,14 @@ exports.getGeneralRecommendations = async(req, res) => {
     return ResponseUtils.processData(res, data);
 
 }
+
+exports.getAllTopMovies = async(req, res) => {
+    var data = {}
+    try{
+        data = JSON.parse(fs.readFileSync('utils/GeneralRecommendations.json'));
+    }catch(e){
+        console.error("Error in finding General Recommendations file: ", e);
+        return ResponseUtils.process500(res);
+    }
+    return ResponseUtils.processData(res, data);
+}

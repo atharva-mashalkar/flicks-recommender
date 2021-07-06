@@ -1,11 +1,14 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import { connect } from 'react-redux'
-import { useHistory } from "react-router-dom";
-import { verifyToken } from "../../store/user/userAction";
-import { getGenralRecommendations } from "../../store/movie/movieAction";
 import Header from "../../common/Header";
 import Footer from "../../common/Footer";
 import { Spin, Layout, Row, Col, Image } from "antd";
+import { useHistory } from "react-router-dom";
+import { 
+    verifyToken,
+    toggleModal
+} from "../../store/user/userAction";
+import { getGenralRecommendations } from "../../store/movie/movieAction";
 
 const { Content } = Layout;
 
@@ -15,6 +18,7 @@ const Dashboard = (props) => {
     const {
         verifyToken,
         getGenralRecommendations,
+        toggleModal,
         userInfo,
         moviesInfo,
         token
@@ -22,9 +26,11 @@ const Dashboard = (props) => {
 
     useEffect(() => {
         const jwtToken = localStorage.getItem("JWT-Token")
-        if(jwtToken && jwtToken!==undefined){
-            // verifyToken(jwtToken)
-            // getGenralRecommendations()
+        if(jwtToken && jwtToken!==undefined && !token){
+            verifyToken(jwtToken)
+        }
+        if(!moviesInfo){
+            getGenralRecommendations()
         }
         if(!jwtToken){
             history.push('/')
@@ -42,13 +48,16 @@ const Dashboard = (props) => {
     )
 }
 
-const mapStateToProps = (state) => ({
-    userInfo:state.user.userInfo,
-    moviesInfo: state.movie.moviesInfo,userInfo:state.user.userInfo,
-    token:state.user.token
-})
+const mapStateToProps = (state) => {
+    return{
+        userInfo:state.user.userInfo,
+        moviesInfo: state.movie.moviesInfo,userInfo:state.user.userInfo,
+        token:state.user.token
+    }
+}
 
 export default connect(mapStateToProps,{
     verifyToken,
-    getGenralRecommendations
+    getGenralRecommendations,
+    toggleModal
 })(Dashboard)

@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema(
         moviesRated: [
             {
                 movieId:{type:Number},
-                rating:{type:Number},
+                userRating:{type:Number},
                 genre:{type:String}
             }
         ],

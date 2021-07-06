@@ -6,9 +6,17 @@ import {
     REQUEST,
     CLEARING_PROPS,
     LOGIN_USER,
-    USER_LOGGED_OUT
+    USER_LOGGED_OUT,
+    TOGGLE_MODAL
 } from './userType'
 import { Recommender } from '../../utils/apiHitHelpers'
+
+export const toggleModal = (value) => (dispatch) => {
+    dispatch({
+        type:TOGGLE_MODAL,
+        payload:value
+    })
+}
 
 export const userLogedOut = () => (dispatch) => {
     dispatch({
