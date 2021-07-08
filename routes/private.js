@@ -12,4 +12,6 @@ router.post('/verify-token', UserController.verifyToken);
 
 router.get('/get-all-top-movies', RecommendationController.getAllTopMovies);
 
+router.post('/get-personal-recommendations', RecommendationController.givePersonalizedRecommendations);
+
 module.exports = router;

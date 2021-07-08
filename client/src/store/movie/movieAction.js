@@ -2,12 +2,15 @@ import {
     FAILED_REQUEST,
     FETCH_GENERAL_RECOMMENDATIONS_SUCCESS,
     FETCH_MOVIE_REQUEST,
-    GET_ALL_TOP_MOVIES
+    GET_ALL_TOP_MOVIES,
+    GET_RECOMMENDATIONS,
+    GET_RECOMMENDATIONS_SUCCESS,
+    GET_RECOMMENDATIONS_FAILURE
 } from './movieType';
 import { Recommender } from '../../utils/apiHitHelpers'
 
 // API request for "/home" route of Python
-export const getGenralRecommendations = () => (dispatch) => {
+export const getGeneralRecommendations = () => (dispatch) => {
     dispatch({
         type: FETCH_MOVIE_REQUEST,
         payload: true
@@ -45,4 +48,24 @@ export const getAllTopMovies = () => (dispatch) => {
         });
     };
     Recommender.get("/private/get-all-top-movies", succFunc, failureFunc);
+}
+
+export const getPersonalizedRecommendations = () => (dispatch) => {
+    dispatch({
+        type: GET_RECOMMENDATIONS,
+        payload: true
+    })
+    let succFunc = (res) => {
+        dispatch({
+            type: GET_RECOMMENDATIONS_SUCCESS,
+            payload: res.data.data
+        });
+    };
+    let failureFunc = (err) => {
+        dispatch({
+            type: GET_RECOMMENDATIONS_FAILURE,
+            payload: err.response.data
+        });
+    };
+    Recommender.get("/private/get-personal-recommendations", succFunc, failureFunc);
 }

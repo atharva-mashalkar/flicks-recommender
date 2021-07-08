@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Header from "../../common/Header";
 import Footer from "../../common/Footer";
-import { getGenralRecommendations } from "../../store/movie/movieAction";
+import { getGeneralRecommendations } from "../../store/movie/movieAction";
 import { verifyToken } from "../../store/user/userAction";
 import { Spin, Layout, Divider, Row, Col, Image } from "antd";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -17,7 +17,7 @@ const HomePage = (props) => {
     let history = useHistory();
 
     const {
-        getGenralRecommendations,
+        getGeneralRecommendations,
         failedRequest,
         loading,
         moviesInfo,
@@ -33,7 +33,7 @@ const HomePage = (props) => {
             verifyToken(jwtToken)
         }
         if(!moviesInfo){
-            getGenralRecommendations()
+            getGeneralRecommendations()
         }
     },[])
 
@@ -63,12 +63,13 @@ const HomePage = (props) => {
                             showThumbs={false}
                         >
                             {
-                                moviesInfo[genre].slice(0,10).map(movie =>
+                                moviesInfo[genre].map(movie =>
                                     <div key={movie.imdbID}>
                                         <Image
                                             width={200}
+                                            height={350}
                                             src={movie.Poster}
-                                            onError={() => "Image not available"}
+                                            alt={movie.Title}
                                         />
                                     </div>
                                 )
@@ -123,7 +124,7 @@ const mapStateToProps = (state) => {
 
 export default connect(
     mapStateToProps,
-    { getGenralRecommendations,
+    { getGeneralRecommendations,
         verifyToken
     }
 )(HomePage)

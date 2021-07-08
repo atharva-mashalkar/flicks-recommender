@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { getGenralRecommendations } from "../store/movie/movieAction";
+import { getGeneralRecommendations } from "../store/movie/movieAction";
 
 function HookCounter() {
 
@@ -8,11 +8,11 @@ function HookCounter() {
     const dispatch = useDispatch()
 
     useEffect(()=>{
-        dispatch(getGenralRecommendations())
+        dispatch(getGeneralRecommendations())
     },[])
 
     const makeCall = () => {
-        dispatch(getGenralRecommendations())
+        dispatch(getGeneralRecommendations())
     }
     // const initialCount = 0
     // const [count, setCount] = useState(initialCount);

@@ -8,7 +8,7 @@ const getGeneralRecommendations = async () => {
         //Getting general recommendations from Python
         const generalRecommendations = await RecommendationUtils.getGeneralRecommendations()
         
-        //Getting any 7 movies(unique for all genre) out from the recommended movies
+        //Getting any 50 movies(unique for all genre) out from the recommended movies
         let movies = {};
         let movieNames = [];
         const NUM_OF_MOVIES_TO_DISPLAY = 50 ;
@@ -31,6 +31,7 @@ const getGeneralRecommendations = async () => {
             for (let i = 0; i < movies[property].length; i++) {
                 film = await OMDbUtils.getInfoByTitleAndYear(movies[property][i][0], movies[property][i][1]);
                 if(film['Response']==="True"){
+                    film['movieId'] = movies[property][i][2];
                     l.push(film);
                 };
             };

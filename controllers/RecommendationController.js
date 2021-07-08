@@ -28,3 +28,18 @@ exports.getAllTopMovies = async(req, res) => {
     }
     return ResponseUtils.processData(res, data);
 }
+
+exports.givePersonalizedRecommendations = async(req, res) => {
+    var data = {};
+    const { moviesRated } = req.body;
+
+    if(!moviesRated){
+        return ResponseUtils.process400(res);
+    }
+    // try{
+
+    // }catch(e){
+
+    // }
+    return ResponseUtils.processData(res, moviesRated);
+}
