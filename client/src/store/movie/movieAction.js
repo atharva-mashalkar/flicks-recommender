@@ -50,7 +50,7 @@ export const getAllTopMovies = () => (dispatch) => {
     Recommender.get("/private/get-all-top-movies", succFunc, failureFunc);
 }
 
-export const getPersonalizedRecommendations = () => (dispatch) => {
+export const getPersonalizedRecommendations = (data) => (dispatch) => {
     dispatch({
         type: GET_RECOMMENDATIONS,
         payload: true
@@ -67,5 +67,5 @@ export const getPersonalizedRecommendations = () => (dispatch) => {
             payload: err.response.data
         });
     };
-    Recommender.get("/private/get-personal-recommendations", succFunc, failureFunc);
+    Recommender.post("/private/get-personal-recommendations", data, succFunc, failureFunc);
 }

@@ -50,7 +50,7 @@ const Dashboard = (props) => {
             toggleModal(true)
         }
         if(userInfo && userInfo.moviesRated.length !== 0){
-            getPersonalizedRecommendations(userInfo.moviesRated)
+            // getPersonalizedRecommendations(userInfo.moviesRated)
         }
     },[userInfo]);
 

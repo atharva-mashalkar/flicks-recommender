@@ -1,7 +1,9 @@
 const ResponseUtils = require('../utils/ResponseUtils');
 const RecommendationUtils = require("../utils/RecommendationUtils")();
 const OMDbUtils = require("../utils/OMDbUtils")();
+const DBUtils = require('../utils/DBUtils')();
 const fs = require('fs');
+const User = require("../models/User");
 
 exports.getGeneralRecommendations = async(req, res) => {
     var data = {}
@@ -31,15 +33,28 @@ exports.getAllTopMovies = async(req, res) => {
 
 exports.givePersonalizedRecommendations = async(req, res) => {
     var data = {};
-    const { moviesRated } = req.body;
+    let { moviesRated } = req.body;
+    let user = req.user;
 
-    if(!moviesRated){
-        return ResponseUtils.process400(res);
+    try{
+        user = await DBUtils.getEntityForId(User, user.id);
+        if(user.moviesRated.length == 0 && moviesRated){
+            await DBUtils.updateEntity(User, {_id:user.id},{moviesRated});
+        }
+        else{
+            moviesRated = user.moviesRated;
+        }
+        movieIds = []
+        genreSelected = {}
+        moviesRated.forEach(movie =>{
+            genreSelected[movie.genre] = 1
+            movieIds.push(movie.movieId)
+        });
+        data = await RecommendationUtils.getRecommendationsByMovieID(user.uid,movieIds,Object.keys(genreSelected))
+    }catch(e){
+        console.error("Error in finding Personal Recommendations: ", e);
+        return ResponseUtils.process500(res);
     }
-    // try{
 
-    // }catch(e){
-
-    // }
-    return ResponseUtils.processData(res, moviesRated);
+    return ResponseUtils.processData(res, data);
 }

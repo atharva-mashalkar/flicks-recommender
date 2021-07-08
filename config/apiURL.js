@@ -5,6 +5,7 @@ const OMDb = {
 };
 
 const Recommender = {
+    // baseURL:"http://localhost:5000"
     baseURL : "https://recommend-py.herokuapp.com"
 } 
 

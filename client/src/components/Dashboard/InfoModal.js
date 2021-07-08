@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Modal, Row, Col, Spin, Select, Image, Rate, message } from 'antd';
 import { toggleModal } from "../../store/user/userAction";
-import { getAllTopMovies } from "../../store/movie/movieAction";
+import { 
+    getAllTopMovies,
+    getPersonalizedRecommendations
+} from "../../store/movie/movieAction";
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
@@ -13,12 +16,13 @@ const InfoModal = (props) => {
     const {
         toggleModal,
         getAllTopMovies,
+        getPersonalizedRecommendations,
         modalVisible,
         allTopMovies
     } = props;
 
     const [selectedGenre, setSelectedGenre] = useState("Action");
-    const [rating, setRating] = useState(null);
+    const [userRating, setUserRating] = useState(null);
     const [currMovie, setCurrMovie] = useState(null);
     const [moviesRated, addMoviesRated] = useState([]);
 
@@ -48,10 +52,11 @@ const InfoModal = (props) => {
                 count += 1
             }
         }
-        if(count < 2){
+        if(count < 3){
             message.error('Please select atleast 4 movies each from 3 different genre.',2);
             return
-        } 
+        }
+        getPersonalizedRecommendations({moviesRated});
         toggleModal(false)
     }
 
@@ -59,16 +64,15 @@ const InfoModal = (props) => {
         setSelectedGenre(value);
     }
 
-    const handleRating = (index, item) => {
+    const handleuserRating = (index, item) => {
         setCurrMovie(item.key.split(".$")[1]);
-        console.log(item.key)
     }
 
     useEffect(() => {
-        if(rating && currMovie){
-            addMoviesRated([...moviesRated, {'movieId':currMovie, 'rating': rating,'genre':selectedGenre}]);
+        if(userRating && currMovie){
+            addMoviesRated([...moviesRated, {'movieId':currMovie, 'userRating': userRating,'genre':selectedGenre}]);
         }
-    },[rating]);
+    },[userRating]);
 
     return (
         <>
@@ -113,7 +117,7 @@ const InfoModal = (props) => {
                                 showStatus={false}
                                 showIndicators={false}
                                 showThumbs={false}
-                                onChange = {handleRating}
+                                onChange = {handleuserRating}
                             >
                                 {
                                     allTopMovies[selectedGenre].map(movie =>
@@ -130,7 +134,7 @@ const InfoModal = (props) => {
                             </Carousel>
                             <br/>
                             <div style={{'textAlign':'center'}}>
-                                <Rate allowHalf defaultValue={2.5} onChange={(value)=>setRating(value)} />
+                                <Rate allowHalf defaultValue={2.5} onChange={(value)=>setUserRating(value)} />
                             </div>
                         </Modal>
                     )
@@ -148,5 +152,6 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
     toggleModal,
-    getAllTopMovies
+    getAllTopMovies,
+    getPersonalizedRecommendations
 })(InfoModal)
