@@ -9,8 +9,8 @@ function getaxiosInstance() {
     headers['Authorization'] = 'Bearer ' + token
   }
   const axiosInstance = axios.create({
-    baseURL:"http://localhost:7000",
-    // baseURL:"https://flicks-recommender.herokuapp.com",
+    // baseURL:"http://localhost:7000",
+    baseURL:"https://flicks-recommender.herokuapp.com",
     headers
   });
   return axiosInstance;
