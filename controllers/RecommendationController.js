@@ -55,12 +55,12 @@ exports.givePersonalizedRecommendations = async(req, res) => {
             Object.keys(genreSelected),
             user.savedToDataSet
         )
-        NUM_OF_MOVIES_TO_DISPLAY = 12
+        NUM_OF_MOVIES_TO_DISPLAY = 9
         for (const property in movieData) {
             let l = []
             var k = 1
             if (property=="recommendations"){
-                k = Math.floor(movieData[property].length/12);
+                k = Math.floor(movieData[property].length/9);
             }
             for (let i = 0; i < movieData[property].length; i += k) {
                 film = await OMDbUtils.getInfoByTitleAndYear(movieData[property][i][0], movieData[property][i][1]);
