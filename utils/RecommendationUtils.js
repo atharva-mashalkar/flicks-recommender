@@ -17,9 +17,9 @@ const RecommendationUtils = () => {
         return deferred.promise;
     };
 
-    const getRecommendationsByMovieID = (userId, movieIds, genreSelected) => {
+    const getRecommendationsByMovieID = (userId, movieIds, genreSelected, savedToDataSet) => {
         const deferred = Q.defer();
-        axios.post(Recommender.baseURL+"/personalized-recommendations",{userId,movieIds,genreSelected})
+        axios.post(Recommender.baseURL+"/personalized-recommendations",{userId,movieIds,genreSelected, savedToDataSet})
         .then(res => {
             deferred.resolve(res.data);
         })

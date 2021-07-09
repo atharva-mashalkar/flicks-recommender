@@ -50,7 +50,7 @@ exports.givePersonalizedRecommendations = async(req, res) => {
             genreSelected[movie.genre] = 1
             movieIds.push(movie.movieId)
         });
-        data = await RecommendationUtils.getRecommendationsByMovieID(user.uid,movieIds,Object.keys(genreSelected))
+        data = await RecommendationUtils.getRecommendationsByMovieID(user.uid,movieIds,Object.keys(genreSelected),user.savedToDataSet)
     }catch(e){
         console.error("Error in finding Personal Recommendations: ", e);
         return ResponseUtils.process500(res);
