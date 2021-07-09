@@ -30,7 +30,7 @@ export default function (state = initialState, action) {
         case GET_RECOMMENDATIONS_SUCCESS:
             return{
                 ...state,
-                per_recommendations:payload,
+                per_recommendations:{...payload, ...state.allTopMovies},
                 loading_per_recommendations:false
             }
         case GET_RECOMMENDATIONS_FAILURE:

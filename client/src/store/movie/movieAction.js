@@ -64,7 +64,7 @@ export const getPersonalizedRecommendations = (data) => (dispatch) => {
     let failureFunc = (err) => {
         dispatch({
             type: GET_RECOMMENDATIONS_FAILURE,
-            payload: err.response.data
+            payload: err
         });
     };
     Recommender.post("/private/get-personal-recommendations", data, succFunc, failureFunc);

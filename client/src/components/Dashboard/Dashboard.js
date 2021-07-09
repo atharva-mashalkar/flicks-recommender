@@ -2,17 +2,19 @@ import React, {useEffect} from 'react'
 import { connect } from 'react-redux'
 import Header from "../../common/Header";
 import Footer from "../../common/Footer";
-import { Spin, Layout, Row, Col, Image } from "antd";
+import { Spin, Layout, Row, Col, Image, Divider } from "antd";
 import { useHistory } from "react-router-dom";
 import { 
     verifyToken,
     toggleModal
 } from "../../store/user/userAction";
 import { 
-    getGeneralRecommendations,
+    getAllTopMovies,
     getPersonalizedRecommendations
 } from "../../store/movie/movieAction";
 import Modal from "./InfoModal";
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const { Content } = Layout;
 
@@ -22,10 +24,10 @@ const Dashboard = (props) => {
     const {
         getPersonalizedRecommendations,
         verifyToken,
-        getGeneralRecommendations,
+        getAllTopMovies,
         toggleModal,
         userInfo,
-        moviesInfo,
+        allTopMovies,
         token,
         loading_per_recommendations,
         per_recommendations,
@@ -37,8 +39,8 @@ const Dashboard = (props) => {
         if(jwtToken && jwtToken!==undefined && !token){
             verifyToken(jwtToken)
         }
-        if(!moviesInfo){
-            getGeneralRecommendations()
+        if(!allTopMovies){
+            getAllTopMovies()
         }
         if(!jwtToken){
             history.push('/')
@@ -50,10 +52,47 @@ const Dashboard = (props) => {
             toggleModal(true)
         }
         if(userInfo && userInfo.moviesRated.length !== 0){
-            // getPersonalizedRecommendations(userInfo.moviesRated)
+            getPersonalizedRecommendations(null)
         }
     },[userInfo]);
 
+    const displayMovies = () => {
+        return (
+            <>
+                { per_recommendations ?
+                Object.keys(per_recommendations).map((genre) =>
+                    <>
+                        <Divider dashed orientation="left">{genre}</Divider>
+                        <Carousel
+                            autoFocus={true}
+                            autoPlay={true}
+                            centerMode={true}
+                            centerSlidePercentage={25}
+                            dynamicHeight={false}
+                            emulateTouch={true}
+                            infiniteLoop={true}
+                            showStatus={false}
+                            showIndicators={false}
+                            showThumbs={false}
+                        >
+                            {
+                                per_recommendations[genre].map(movie =>
+                                    <div key={movie.imdbID}>
+                                        <Image
+                                            width={200}
+                                            height={350}
+                                            src={movie.Poster}
+                                            alt={movie.Title}
+                                        />
+                                    </div>
+                                )
+                            }
+                        </Carousel>
+                    </>
+                ):null}
+            </>
+        )
+    }
 
     return (
         <Layout>
@@ -64,7 +103,27 @@ const Dashboard = (props) => {
                     (
                         <Modal/>
                     ):
-                    <h1>Welcome to Dashboard</h1>
+                    <>
+                    {
+                        loading_per_recommendations ? 
+                        (
+                            <Row align="middle" gutter='32'>
+                                <Col span={2} offset={11}>
+                                    <Spin size="large" />
+                                </Col>
+                            </Row>
+                        ):
+                        (
+                            <>
+                                {
+                                    per_failure ? 
+                                    <h1 style={{textAlign:"center"}}> Something went wrong. Please try refreshing the page</h1> :
+                                    displayMovies()
+                                }
+                            </>
+                        )
+                    }
+                    </>
                 }
             </Content>
             <Footer/>
@@ -75,7 +134,8 @@ const Dashboard = (props) => {
 const mapStateToProps = (state) => {
     return{
         userInfo:state.user.userInfo,
-        moviesInfo: state.movie.moviesInfo,userInfo:state.user.userInfo,
+        allTopMovies: state.movie.allTopMovies,
+        userInfo:state.user.userInfo,
         token:state.user.token,
         loading_per_recommendations:state.movie.loading_per_recommendations,
         per_recommendations:state.movie.per_recommendations,
@@ -85,6 +145,7 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps,{
     verifyToken,
-    getGeneralRecommendations,
+    getAllTopMovies,
     toggleModal,
+    getPersonalizedRecommendations
 })(Dashboard)

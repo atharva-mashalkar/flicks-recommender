@@ -50,11 +50,36 @@ exports.givePersonalizedRecommendations = async(req, res) => {
             genreSelected[movie.genre] = 1
             movieIds.push(movie.movieId)
         });
-        data = await RecommendationUtils.getRecommendationsByMovieID(
+        let movieData = await RecommendationUtils.getRecommendationsByMovieID(
             user.uid,movieIds,
             Object.keys(genreSelected),
             user.savedToDataSet
         )
+        NUM_OF_MOVIES_TO_DISPLAY = 12
+        for (const property in movieData) {
+            let l = []
+            var k = 1
+            if (property=="recommendations"){
+                k = Math.floor(movieData[property].length/12);
+            }
+            for (let i = 0; i < movieData[property].length; i += k) {
+                film = await OMDbUtils.getInfoByTitleAndYear(movieData[property][i][0], movieData[property][i][1]);
+                if(film['Response']==="True"){
+                    film['movieId'] = movieData[property][i][2];
+                    l.push(film);
+                };
+            };
+            console.log(`${l.length} movies found out of ${NUM_OF_MOVIES_TO_DISPLAY} under ${property} category`);
+            if(property=="recommendations"){
+                data["Movies Recommended For You"] = l;
+            }
+            else if(property=="genreBasedRecommendations"){
+                data["Other popular movies belonging to the same genres"] = l;
+            }
+            else{
+                data["Few Popular Movies"] = l;
+            }
+        }
     }catch(error){
         console.error("Error in finding Personal Recommendations: ", error);
         return ResponseUtils.process500(res);
