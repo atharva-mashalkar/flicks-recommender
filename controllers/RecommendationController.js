@@ -51,8 +51,8 @@ exports.givePersonalizedRecommendations = async(req, res) => {
             movieIds.push(movie.movieId)
         });
         data = await RecommendationUtils.getRecommendationsByMovieID(user.uid,movieIds,Object.keys(genreSelected),user.savedToDataSet)
-    }catch(e){
-        console.error("Error in finding Personal Recommendations: ", e);
+    }catch(error){
+        console.error("Error in finding Personal Recommendations: ", error);
         return ResponseUtils.process500(res);
     }
 
