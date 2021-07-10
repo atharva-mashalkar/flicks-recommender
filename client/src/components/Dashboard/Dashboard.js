@@ -6,15 +6,18 @@ import { Spin, Layout, Row, Col, Image, Divider } from "antd";
 import { useHistory } from "react-router-dom";
 import { 
     verifyToken,
-    toggleModal
+    toggleModal,
+    toggleMovieModal
 } from "../../store/user/userAction";
 import { 
     getAllTopMovies,
-    getPersonalizedRecommendations
+    getPersonalizedRecommendations,
+    selectMovie
 } from "../../store/movie/movieAction";
-import Modal from "./InfoModal";
+import ExplicitRatingModal from "./ExplicitRatingModal";
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import MovieInfoModal from './MovieInfoModal';
 
 const { Content } = Layout;
 
@@ -26,6 +29,8 @@ const Dashboard = (props) => {
         verifyToken,
         getAllTopMovies,
         toggleModal,
+        toggleMovieModal,
+        selectMovie,
         userInfo,
         allTopMovies,
         token,
@@ -56,7 +61,16 @@ const Dashboard = (props) => {
         }
     },[userInfo]);
 
-    const displayMovies = () => {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    },[per_recommendations]);
+
+    const showMovieInfo = (movie) => {
+        selectMovie(movie)
+        toggleMovieModal(true)
+    }
+
+    const displayRecommendations = () => {
         return (
             <>
                 { per_recommendations ?
@@ -77,12 +91,13 @@ const Dashboard = (props) => {
                         >
                             {
                                 per_recommendations[genre].map(movie =>
-                                    <div key={movie.imdbID}>
+                                    <div key={movie.movieId} onClick={() => showMovieInfo(movie)}>
                                         <Image
                                             width={200}
                                             height={350}
                                             src={movie.Poster}
                                             alt={movie.Title}
+                                            preview={false}
                                         />
                                     </div>
                                 )
@@ -101,7 +116,7 @@ const Dashboard = (props) => {
                 {
                     userInfo && userInfo.moviesRated.length === 0  ? 
                     (
-                        <Modal/>
+                        <ExplicitRatingModal/>
                     ):
                     <>
                     {
@@ -116,10 +131,11 @@ const Dashboard = (props) => {
                         (
                             <>
                                 {
-                                    per_failure ? 
+                                    per_failure? 
                                     <h1 style={{textAlign:"center"}}> Something went wrong. Please try refreshing the page</h1> :
-                                    displayMovies()
+                                    displayRecommendations()
                                 }
+                                <MovieInfoModal/>
                             </>
                         )
                     }
@@ -147,5 +163,7 @@ export default connect(mapStateToProps,{
     verifyToken,
     getAllTopMovies,
     toggleModal,
-    getPersonalizedRecommendations
+    getPersonalizedRecommendations,
+    selectMovie,
+    toggleMovieModal
 })(Dashboard)

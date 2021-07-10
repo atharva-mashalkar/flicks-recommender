@@ -7,3 +7,4 @@ export const CLEARING_PROPS = "CLEARING_PROPS"
 export const LOGIN_USER = "LOGIN_USER";
 export const USER_LOGGED_OUT = "USER_LOGGED_OUT";
 export const TOGGLE_MODAL = "TOGGLE_MODAL";
+export const TOGGLE_MOVIE_MODAL = "TOGGLE_MOVIE_MODAL";

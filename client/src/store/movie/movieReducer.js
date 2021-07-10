@@ -6,7 +6,8 @@ import {
     GET_ALL_TOP_MOVIES,
     GET_RECOMMENDATIONS_FAILURE,
     GET_RECOMMENDATIONS_SUCCESS,
-    GET_RECOMMENDATIONS
+    GET_RECOMMENDATIONS,
+    SELECTED_MOVIE,
 } from './movieType';
 
 const initialState = {
@@ -16,12 +17,19 @@ const initialState = {
     allTopMovies:null,
     loading_per_recommendations :false,
     per_recommendations:null,
-    per_failure:false
+    per_failure:false,
+    selectedMovie:null,
+    rateMovieFailure:false
 }
 
 export default function (state = initialState, action) {
     const {type, payload} = action
     switch (type){
+        case SELECTED_MOVIE:
+            return{
+                ...state,
+                selectedMovie:payload
+            }
         case GET_RECOMMENDATIONS:
             return{
                 ...state,
@@ -31,7 +39,8 @@ export default function (state = initialState, action) {
             return{
                 ...state,
                 per_recommendations:{...payload, ...state.allTopMovies},
-                loading_per_recommendations:false
+                loading_per_recommendations:false,
+                per_failure:false
             }
         case GET_RECOMMENDATIONS_FAILURE:
             return{

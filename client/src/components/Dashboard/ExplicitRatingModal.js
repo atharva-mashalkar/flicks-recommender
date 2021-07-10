@@ -11,7 +11,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const { Option } = Select;
 
-const InfoModal = (props) => {
+const ExplicitRatingModal = (props) => {
 
     const {
         toggleModal,
@@ -94,6 +94,7 @@ const InfoModal = (props) => {
                             centered={true}
                             width={"500px"}
                             bodyStyle={{ "height": '650px', 'padding': '20px 20px' }}
+                            preview={false}
                         >
                             <Select defaultValue="Action" style={{ width: 200 }} onChange={handleChange}>
                                 {
@@ -154,4 +155,4 @@ export default connect(mapStateToProps, {
     toggleModal,
     getAllTopMovies,
     getPersonalizedRecommendations
-})(InfoModal)
+})(ExplicitRatingModal)

@@ -30,9 +30,23 @@ const RecommendationUtils = () => {
         return deferred.promise;
     }
 
+    const getMovieGenre = (movieId) => {
+        const deferred = Q.defer();
+        axios.post(Recommender.baseURL+"/get-movie-genre",{movieId})
+        .then(res => {
+            deferred.resolve(res.data);
+        })
+        .catch(err => {
+            console.error(`Error in finding movie's genre : ${err}`);
+            deferred.reject();
+        })
+        return deferred.promise;
+    }
+
     return {
         getGeneralRecommendations,
-        getRecommendationsByMovieID
+        getRecommendationsByMovieID,
+        getMovieGenre
     };
 
 }

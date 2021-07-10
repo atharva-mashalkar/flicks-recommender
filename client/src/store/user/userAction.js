@@ -7,9 +7,17 @@ import {
     CLEARING_PROPS,
     LOGIN_USER,
     USER_LOGGED_OUT,
-    TOGGLE_MODAL
+    TOGGLE_MODAL,
+    TOGGLE_MOVIE_MODAL
 } from './userType'
 import { Recommender } from '../../utils/apiHitHelpers'
+
+export const toggleMovieModal = (value) => (dispatch) => {
+    dispatch({
+        type:TOGGLE_MOVIE_MODAL,
+        payload:value
+    })
+}
 
 export const toggleModal = (value) => (dispatch) => {
     dispatch({

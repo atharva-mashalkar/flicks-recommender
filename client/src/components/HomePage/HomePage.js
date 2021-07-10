@@ -43,6 +43,10 @@ const HomePage = (props) => {
         }
     }, [userInfo])
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    },[moviesInfo]);
+
     const displayMovies = () => {
         return (
             <>
@@ -98,7 +102,7 @@ const HomePage = (props) => {
                     (
                         <>
                             {
-                                failedRequest ? <h1 style={{textAlign:"center"}}> Something went wrong. Please try refreshing the page</h1> :
+                                !moviesInfo && failedRequest ? <h1 style={{textAlign:"center"}}> Something went wrong. Please try refreshing the page</h1> :
                                     displayMovies()
                             }
                         </>

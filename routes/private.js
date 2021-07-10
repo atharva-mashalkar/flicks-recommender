@@ -14,4 +14,6 @@ router.get('/get-all-top-movies', RecommendationController.getAllTopMovies);
 
 router.post('/get-personal-recommendations', RecommendationController.givePersonalizedRecommendations);
 
+router.post('/save-rating', RecommendationController.saveMovieRating);
+
 module.exports = router;

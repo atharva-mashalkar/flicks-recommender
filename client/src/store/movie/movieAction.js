@@ -5,9 +5,19 @@ import {
     GET_ALL_TOP_MOVIES,
     GET_RECOMMENDATIONS,
     GET_RECOMMENDATIONS_SUCCESS,
-    GET_RECOMMENDATIONS_FAILURE
+    GET_RECOMMENDATIONS_FAILURE,
+    SELECTED_MOVIE,
+    RATE_SELECTED_MOVIE,
+    RATE_SELECTED_MOVIE_FAILURE
 } from './movieType';
 import { Recommender } from '../../utils/apiHitHelpers'
+
+export const selectMovie = (movie) => (dispatch) => {
+    dispatch({
+        type:SELECTED_MOVIE,
+        payload:movie
+    });
+};
 
 // API request for "/home" route of Python
 export const getGeneralRecommendations = () => (dispatch) => {
@@ -68,4 +78,20 @@ export const getPersonalizedRecommendations = (data) => (dispatch) => {
         });
     };
     Recommender.post("/private/get-personal-recommendations", data, succFunc, failureFunc);
+}
+
+export const rateMovie = (data) => (dispatch) => {
+    let succFunc = (res) => {
+        dispatch({
+            type: RATE_SELECTED_MOVIE,
+            payload: res
+        });
+    };
+    let failureFunc = (err) => {
+        dispatch({
+            type: RATE_SELECTED_MOVIE_FAILURE,
+            payload: err.response.data
+        });
+    };
+    Recommender.post("/private/rate-movie", data, succFunc, failureFunc);
 }

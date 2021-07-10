@@ -87,3 +87,26 @@ exports.givePersonalizedRecommendations = async(req, res) => {
 
     return ResponseUtils.processData(res, data);
 }
+
+exports.saveMovieRating = async(req,res) => {
+    let { movieId, rating} = req.body;
+    if (!movieId || !rating){
+        return ResponseUtils.process400(res);
+    } 
+    try{
+        let user = await DBUtils.getEntityForId(User,req.user.id);
+        let {genre} = await RecommendationUtils.getMovieGenre(movieId)
+        moviesRated = [...user.moviesRated, { 
+            movieId,
+            userRating:rating,
+            genre
+        }]
+        await DBUtils.updateEntity(User,{_id:req.user.id},{moviesRated})
+    }
+    catch(error){
+        console.error("Error in saving movie rating: ", error);
+        return ResponseUtils.process500(res);
+    }
+    
+    return ResponseUtils.processData(res);
+}

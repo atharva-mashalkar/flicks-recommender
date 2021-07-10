@@ -7,7 +7,8 @@ import {
     CLEARING_PROPS,
     LOGIN_USER,
     USER_LOGGED_OUT,
-    TOGGLE_MODAL
+    TOGGLE_MODAL,
+    TOGGLE_MOVIE_MODAL
 } from './userType'
 
 const initialState = {
@@ -18,12 +19,18 @@ const initialState = {
     req_success: false,
     userInfo:null,
     token:null,
-    modalVisible:false
+    modalVisible:false,
+    movieModalVisible:false
 }
 
 export default function (state = initialState, action) {
     const {type, payload} = action
     switch (type){
+        case TOGGLE_MOVIE_MODAL:
+            return{
+                ...state,
+                movieModalVisible:payload
+            }
         case TOGGLE_MODAL:
             return {
                 ...state,
