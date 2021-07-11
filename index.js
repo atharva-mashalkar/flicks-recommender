@@ -38,20 +38,21 @@ app.use(express.json());
 
 // Adding few security headers
 app.use(helmet({
-	contentSecurityPolicy: {
-		directives: {
-			...helmet.contentSecurityPolicy.getDefaultDirectives(),
-			"script-src": [
-				"'self'",
-				"'unsafe-inline'",
-				"http://www.omdbapi.com/",
-				"https://recommend-py.herokuapp.com"
-			],
-		},
-	},
-	referrerPolicy: {
-		policy: "no-referrer-when-downgrade",
-	},
+	contentSecurityPolicy: false,
+	// contentSecurityPolicy: {
+	// 	directives: {
+	// 		...helmet.contentSecurityPolicy.getDefaultDirectives(),
+	// 		"script-src": [
+	// 			"'self'",
+	// 			"'unsafe-inline'",
+	// 			"http://www.omdbapi.com/",
+	// 			"https://recommend-py.herokuapp.com"
+	// 		],
+	// 	},
+	// },
+	// referrerPolicy: {
+	// 	policy: "no-referrer-when-downgrade",
+	// },
 }));
 
 // Declaring the routes
