@@ -43,6 +43,11 @@ app.use(helmet());
 app.use('/public', publicRoutes);
 app.use('/private', privateRoutes);
 
+//Running files through build for production
+if (process.env.NODE_ENV === 'production'){
+	app.use(express.static('client/build'));
+}
+
 // Staring the server
 app.listen(PORT, () => {
     console.error(`NODE_ENV is set to ${environment} and the server is listening to Port ${PORT}.`);

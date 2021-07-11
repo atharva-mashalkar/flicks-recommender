@@ -19,7 +19,6 @@ const initialState = {
     per_recommendations:null,
     per_failure:false,
     selectedMovie:null,
-    rateMovieFailure:false
 }
 
 export default function (state = initialState, action) {

@@ -6,9 +6,7 @@ import {
     GET_RECOMMENDATIONS,
     GET_RECOMMENDATIONS_SUCCESS,
     GET_RECOMMENDATIONS_FAILURE,
-    SELECTED_MOVIE,
-    RATE_SELECTED_MOVIE,
-    RATE_SELECTED_MOVIE_FAILURE
+    SELECTED_MOVIE
 } from './movieType';
 import { Recommender } from '../../utils/apiHitHelpers'
 
@@ -80,18 +78,6 @@ export const getPersonalizedRecommendations = (data) => (dispatch) => {
     Recommender.post("/private/get-personal-recommendations", data, succFunc, failureFunc);
 }
 
-export const rateMovie = (data) => (dispatch) => {
-    let succFunc = (res) => {
-        dispatch({
-            type: RATE_SELECTED_MOVIE,
-            payload: res
-        });
-    };
-    let failureFunc = (err) => {
-        dispatch({
-            type: RATE_SELECTED_MOVIE_FAILURE,
-            payload: err.response.data
-        });
-    };
-    Recommender.post("/private/rate-movie", data, succFunc, failureFunc);
+export const rateMovie = (data) => {
+    Recommender.post("/private/save-rating", data);
 }
