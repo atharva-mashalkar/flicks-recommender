@@ -4,7 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const connection = require('./config/connection');
-const compression = require("compression");
+// const compression = require("compression");
 
 //Importing routes
 const publicRoutes = require('./routes/public');
@@ -38,7 +38,7 @@ mongoose.connection.on('error', (err) => {
 app.use(express.json()); 
 
 // Adding few security headers
-app.use(compression({ level: 7 }));
+// app.use(compression({ level: 7 }));
 app.use(helmet({
 	contentSecurityPolicy: false,
 }));
