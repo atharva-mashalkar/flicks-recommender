@@ -33,7 +33,6 @@ const ExplicitRatingModal = (props) => {
     const handleCancel = () => {
         let genreSelected={}
         moviesRated.forEach(movie =>{
-            // console.log(movie.genre)
             if(genreSelected[movie.genre]){
                 genreSelected[movie.genre] += 1
             }
@@ -56,6 +55,7 @@ const ExplicitRatingModal = (props) => {
             message.error('Please select atleast 4 movies each from 3 different genre.',2);
             return
         }
+        getAllTopMovies()
         getPersonalizedRecommendations({moviesRated});
         toggleModal(false)
     }

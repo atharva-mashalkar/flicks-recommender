@@ -41,7 +41,6 @@ export const Recommender = {
         } 
       })
       .catch((err) => {
-        console.log(err);
         if (failureAction) {
           failureAction(err);
         }

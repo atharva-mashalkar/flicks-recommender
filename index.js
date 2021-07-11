@@ -4,6 +4,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const connection = require('./config/connection');
+const path = require('path');
+
 // const compression = require("compression");
 
 //Importing routes
@@ -50,6 +52,12 @@ app.use('/private', privateRoutes);
 //Running files through build for production
 if (process.env.NODE_ENV === 'production'){
 	app.use(express.static('client/build'));
+
+	// Express serve up index.html file if it doesn't recognize route
+	app.get('*', (req, res) => {
+	  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+	});
+
 }
 
 // Staring the server

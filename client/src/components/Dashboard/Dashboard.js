@@ -155,7 +155,7 @@ const mapStateToProps = (state) => {
         token:state.user.token,
         loading_per_recommendations:state.movie.loading_per_recommendations,
         per_recommendations:state.movie.per_recommendations,
-        per_failure:state.movie.per_failure
+        per_failure:state.movie.per_failure,
     }
 }
 
