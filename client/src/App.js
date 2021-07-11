@@ -6,10 +6,6 @@ import HomePage from './components/HomePage';
 import Signup from './components/Signup';
 import Dashboard from "./components/Dashboard";
 
-// import HookCounter from './components/HookCounter';
-// import ClassCounter from './components/ClassCounter';
-// import ToggleDisplay from './components/ToggleDisplay';
-
 function App() {
   return (
     <Provider store = {store}>
@@ -30,9 +26,6 @@ function App() {
             path="/dashboard"
             component={Dashboard}
           />
-          {/* <Route exact path = "/" component = {ToggleDisplay}/> */}
-          {/* <Route exact path="/" component={HookCounter}/> */}
-          {/* <Route exact path="/" component={ClassCounter}/> */}
           <Route path="*">
             <Redirect to="/"/>
           </Route>
