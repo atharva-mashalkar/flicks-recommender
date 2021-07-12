@@ -32,7 +32,8 @@ export default function (state = initialState, action) {
         case GET_RECOMMENDATIONS:
             return{
                 ...state,
-                loading_per_recommendations:true
+                loading_per_recommendations:true,
+                per_failure:false
             }
         case GET_RECOMMENDATIONS_SUCCESS:
             return{

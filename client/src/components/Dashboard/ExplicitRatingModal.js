@@ -8,10 +8,13 @@ import {
 } from "../../store/movie/movieAction";
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { useHistory } from "react-router-dom";
 
 const { Option } = Select;
 
 const ExplicitRatingModal = (props) => {
+
+    let history = useHistory();
 
     const {
         toggleModal,
@@ -55,9 +58,10 @@ const ExplicitRatingModal = (props) => {
             message.error('Please select atleast 4 movies each from 3 different genre.',2);
             return
         }
-        getAllTopMovies()
+        // getAllTopMovies()
         getPersonalizedRecommendations({moviesRated});
         toggleModal(false)
+        history.push('/')
     }
 
     const handleChange = (value) => {

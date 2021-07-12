@@ -44,7 +44,7 @@ const Dashboard = (props) => {
         if(jwtToken && jwtToken!==undefined && !token){
             verifyToken(jwtToken)
         }
-        if(!allTopMovies && token){
+        if(!allTopMovies && token && userInfo && userInfo.moviesRated.length !== 0){
             getAllTopMovies()
         }
         if(!jwtToken){
@@ -91,7 +91,7 @@ const Dashboard = (props) => {
                         >
                             {
                                 per_recommendations[genre].map(movie =>
-                                    <div key={movie.movieId} onClick={() => showMovieInfo(movie)}>
+                                    <div key={movie.imdbID} onClick={() => showMovieInfo(movie)}>
                                         <Image
                                             width={200}
                                             height={350}
@@ -122,7 +122,7 @@ const Dashboard = (props) => {
                     {
                         loading_per_recommendations ? 
                         (
-                            <Row align="middle" gutter='32'>
+                            <Row align="middle" gutter='32' style={{'height':'750px'}}>
                                 <Col span={2} offset={11}>
                                     <Spin size="large" />
                                 </Col>
@@ -131,7 +131,7 @@ const Dashboard = (props) => {
                         (
                             <>
                                 {
-                                    per_failure? 
+                                    per_failure && !per_recommendations? 
                                     <h1 style={{textAlign:"center"}}> Something went wrong. Please try refreshing the page</h1> :
                                     displayRecommendations()
                                 }

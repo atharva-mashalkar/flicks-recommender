@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layout, Button, Row, Col } from "antd";
 import { connect } from 'react-redux'
-import { 
-    toggleSignupDrawer, 
+import {
+    toggleSignupDrawer,
     toggleLoginDrawer,
     userLogedOut
 } from '../../store/user/userAction';
 import { useHistory } from "react-router-dom";
 
-const { Header} = Layout;
+const { Header } = Layout;
 
 function HeaderComponent(props) {
     let history = useHistory();
@@ -19,6 +19,7 @@ function HeaderComponent(props) {
         toggleSignupDrawer,
         toggleLoginDrawer,
         userLogedOut,
+        userInfo,
         token
     } = props;
 
@@ -29,15 +30,15 @@ function HeaderComponent(props) {
     const showLoginDrawer = () => {
         toggleLoginDrawer(true);
     }
-    
+
     useEffect(() => {
-        if(token){
+        if (token) {
             setLoggedIn(true);
         }
-        else{
+        else {
             setLoggedIn(false);
         }
-    },[token]);
+    }, [token]);
 
     const logOut = () => {
         localStorage.removeItem("JWT-Token");
@@ -47,62 +48,66 @@ function HeaderComponent(props) {
 
     const loggedInHeader = () => {
         return (
-            <Row 
-                align="middle" 
-                gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} 
+            <Row
+                gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             >
-                <Col 
-                    className="gutter-row" 
-                    span={1} 
-                    align="start" 
-                    offset="0"
+                <Col
+                    className="gutter-row"
+                    span={1}
+                    align="center"
+                    offset={0}
                 >
-                    <Button 
-                        size="large" 
-                        style={{ borderRadius: '10px' }} 
+                    <Button
+                        size="large"
+                        style={{ borderRadius: '10px' }}
                         onClick={logOut}
                     >
                         Logout
                     </Button>
                 </Col>
+                {
+                    userInfo ?
+                        <Col offset={18} span={5} ><h2 style={{'color':'white'}}>Welcome <b>{userInfo.firstName}</b></h2></Col>
+                        : null
+                }
             </Row>
         )
     }
 
     const notLoggedInHeader = () => {
         return (
-            <Row 
-                align="middle" 
-                gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} 
+            <Row
+                align="middle"
+                gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
             >
-                <Col 
-                    className="gutter-row" 
-                    span={1} 
-                    align="center" 
-                    xs={{ offset: "4" }} 
-                    sm={{ offset: "8" }} 
-                    md={{ offset: "16" }} 
+                <Col
+                    className="gutter-row"
+                    span={1}
+                    align="center"
+                    xs={{ offset: "4" }}
+                    sm={{ offset: "8" }}
+                    md={{ offset: "16" }}
                     lg={{ offset: '20' }}
                 >
-                    <Button 
-                        size="large" 
-                        style={{ borderRadius: '10px' }} 
+                    <Button
+                        size="large"
+                        style={{ borderRadius: '10px' }}
                         onClick={showSignupDrawer}
                     >
                         Signup
                     </Button>
                 </Col>
-                <Col 
-                    className="gutter-row" 
-                    span={1} 
-                    align="start" 
-                    xs={{ offset: "8" }} 
-                    sm={{ offset: "4" }} 
-                    md={{ offset: "2" }} 
+                <Col
+                    className="gutter-row"
+                    span={1}
+                    align="start"
+                    xs={{ offset: "8" }}
+                    sm={{ offset: "4" }}
+                    md={{ offset: "2" }}
                     lg={{ offset: '1' }}
                 >
-                    <Button 
-                        size="large" 
+                    <Button
+                        size="large"
                         style={{ borderRadius: '10px' }}
                         onClick={showLoginDrawer}
                     >
@@ -123,8 +128,9 @@ function HeaderComponent(props) {
 }
 
 const mapStateToProps = (state) => {
-    return{
-        token:state.user.token,
+    return {
+        token: state.user.token,
+        userInfo: state.user.userInfo
     }
 };
 

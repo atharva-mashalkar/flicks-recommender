@@ -93,7 +93,7 @@ const HomePage = (props) => {
                 <Login/>
                 {loading ?
                     (
-                        <Row align="middle" gutter='32'>
+                        <Row align="middle" gutter='32' style={{'height':'750px'}}>
                             <Col span={2} offset={11}>
                                 <Spin size="large" />
                             </Col>

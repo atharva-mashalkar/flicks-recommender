@@ -1,11 +1,13 @@
 import React from 'react'
-import { Spin } from 'antd';
+import { Row, Col, Spin } from 'antd';
 
 function Loader() {
     return (
-        <div>
-            <Spin />
-        </div>
+        <Row align="middle" gutter='32' style={{ 'height': '750px' }}>
+            <Col span={2} offset={11}>
+                <Spin size="large" />
+            </Col>
+        </Row>
     )
 }
 
