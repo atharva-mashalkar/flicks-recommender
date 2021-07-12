@@ -58,11 +58,13 @@ export const registerUser = (data) => (dispatch) => {
     dispatch({
         type: REQUEST,
         payload: true
-    })
+    });
     let succFunc = (res) => {
+        let token = res.data.data.token;
+        delete res.data.data.token
         dispatch({
             type: REGISTER_USER,
-            payload: res.data
+            payload: {token , user: res.data.data} 
         });
     };
     let failureFunc = (err) => {

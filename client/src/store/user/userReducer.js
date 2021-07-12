@@ -57,6 +57,8 @@ export default function (state = initialState, action) {
         case REGISTER_USER:
             return{
                 ...state,
+                userInfo:{...payload.user.user},
+                token:payload.token,
                 processing_reg:false,
                 req_success:true,
                 failed_req:null,

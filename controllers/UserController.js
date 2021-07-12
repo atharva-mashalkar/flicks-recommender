@@ -58,10 +58,10 @@ exports.registerUser = async(req, res) => {
 
     }
 
-    return ResponseUtils.processData(res {
+    return ResponseUtils.processData(res, {
         user,
         token
-    });
+    })
 }
 
 exports.login = async(req, res) => {
