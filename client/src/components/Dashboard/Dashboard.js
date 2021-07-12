@@ -44,7 +44,7 @@ const Dashboard = (props) => {
         if(jwtToken && jwtToken!==undefined && !token){
             verifyToken(jwtToken)
         }
-        if(!allTopMovies){
+        if(!allTopMovies && token){
             getAllTopMovies()
         }
         if(!jwtToken){

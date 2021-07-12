@@ -11,6 +11,8 @@ exports.registerUser = async(req, res) => {
         return ResponseUtils.process400(res);
     }
 
+    var user = 0;
+    var token = 0;
     try{
         let users = await DBUtils.getAllEntities(User,{});
 
@@ -34,13 +36,32 @@ exports.registerUser = async(req, res) => {
         });
         await DBUtils.saveEntity(user);
 
+        //Fetching user and generating auth token
+        user = await DBUtils.getEntity(User,{username})
+
+        //Signing token
+        token = JwtService.issue({
+            id: user._id.toString(), 
+            username:user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            uid: user.uid,
+            moviesRated: user.moviesRated
+        })
+
+        //Adding token as header in response
+        res.header("Authorization", token)
+
     }catch(e){
         console.error("Error in registering new user: ", e);
         return ResponseUtils.process500(res);
 
     }
 
-    return ResponseUtils.processData(res);
+    return ResponseUtils.processData(res {
+        user,
+        token
+    });
 }
 
 exports.login = async(req, res) => {
