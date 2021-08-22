@@ -33,6 +33,32 @@ const ExplicitRatingModal = (props) => {
         getAllTopMovies()
     }, []);
 
+    useEffect(() => {
+        let genreSelected={}
+        moviesRated.forEach(movie =>{
+            if(genreSelected[movie.genre]){
+                genreSelected[movie.genre] += 1
+            }
+            else{
+                genreSelected[movie.genre] = 1
+            }
+        });
+        let temp = Object.keys(genreSelected);
+        if(temp.length < 3){
+            return 
+        }
+        let count = 0
+        for(let i=0; i<temp.length;i++){
+            if(genreSelected[temp[i]]>= 3){
+                count += 1
+            }
+        }
+        if(count < 4){
+            return
+        }
+        handleCancel()
+    },[moviesRated])
+
     const handleCancel = () => {
         let genreSelected={}
         moviesRated.forEach(movie =>{
@@ -45,7 +71,7 @@ const ExplicitRatingModal = (props) => {
         });
         let temp = Object.keys(genreSelected);
         if(temp.length < 3){
-            message.error('Please select atleast 4 movies each from 3 different genre.',2);
+            message.error('You did not rate atleast 3 genre yet. Please select atleast 4 movies each from 3 different genre.',2);
             return 
         }
         let count = 0
@@ -54,14 +80,14 @@ const ExplicitRatingModal = (props) => {
                 count += 1
             }
         }
-        if(count < 3){
-            message.error('Please select atleast 4 movies each from 3 different genre.',2);
+        if(count < 4){
+            message.error('You did not rate atleast 4 moviess for some genre yet. Please select atleast 4 movies each from 3 different genre.',2);
             return
         }
         // getAllTopMovies()
         getPersonalizedRecommendations({moviesRated});
         toggleModal(false)
-        history.push('/')
+        window.location.href = "/"
     }
 
     const handleChange = (value) => {

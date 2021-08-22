@@ -59,10 +59,13 @@ const Dashboard = (props) => {
         if(userInfo && userInfo.moviesRated.length !== 0){
             getPersonalizedRecommendations(null)
         }
-    },[userInfo]);
+    },[userInfo,allTopMovies]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        if(!allTopMovies && token && userInfo && userInfo.moviesRated.length !== 0){
+            getAllTopMovies()
+        }
     },[per_recommendations]);
 
     const showMovieInfo = (movie) => {

@@ -6,6 +6,7 @@ import {
     selectMovie,
     rateMovie
 } from "../../store/movie/movieAction";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 const { Header, Footer, Sider, Content } = Layout
@@ -61,12 +62,13 @@ const MovieInfoModal = (props) => {
                             centered={true}
                             width={"900px"}
                             bodyStyle={{ "height": '650px', 'padding': '0px 0px' }}
+                            closeIcon = {<CloseCircleOutlined style = {{'color':"white", 'fontSize': '24px'}}/>}
                         >
                             <Layout>
                                 <Header style={{ 'height': '90px', 'padding': '10px 10px' }}>
                                     <Row >
                                         <Col align='center' span={21} offset={1}>
-                                            <Title level={1}>{selectedMovie.Title}</Title>
+                                            <Title style ={{'color':'white'}} level={1}>{selectedMovie.Title}</Title>
                                         </Col>
                                     </Row>
                                 </Header>
